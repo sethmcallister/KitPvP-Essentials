@@ -10,9 +10,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import rip.kitpvp.essentials.Main;
@@ -47,6 +51,42 @@ public class PlayerInteractListener implements Listener
                 MessageUtils.sendStaffMessage(event.getPlayer(), "&eYou have been randomly telported to &a" + player.getName() + "&e.");
             }
         }
+    }
+
+    @EventHandler
+    public void onBlockBreak(BlockBreakEvent event)
+    {
+        User user = API.getUserManager().findByUniqueId(event.getPlayer().getUniqueId());
+        Profile profile = user.getProfile("essentials");
+        if(profile.getBoolean("staffmode"))
+            event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onBucketEmpty(PlayerBucketEmptyEvent event)
+    {
+        User user = API.getUserManager().findByUniqueId(event.getPlayer().getUniqueId());
+        Profile profile = user.getProfile("essentials");
+        if(profile.getBoolean("staffmode"))
+            event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onBlockPlace(BlockPlaceEvent event)
+    {
+        User user = API.getUserManager().findByUniqueId(event.getPlayer().getUniqueId());
+        Profile profile = user.getProfile("essentials");
+        if(profile.getBoolean("staffmode"))
+            event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onItemPickup(PlayerPickupItemEvent event)
+    {
+        User user = API.getUserManager().findByUniqueId(event.getPlayer().getUniqueId());
+        Profile profile = user.getProfile("essentials");
+        if(profile.getBoolean("staffmode"))
+            event.setCancelled(true);
     }
 
     @EventHandler
