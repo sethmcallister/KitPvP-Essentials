@@ -56,12 +56,15 @@ public class Main extends JavaPlugin
         getCommand("freeze").setExecutor(new FreezeCommand());
         getCommand("gamemode").setExecutor(new GamemodeCommand());
         getCommand("ignore").setExecutor(new IgnoreCommand());
-        getCommand("message").setExecutor(new MessageCommand());
         getCommand("lag").setExecutor(new LagCommand());
         getCommand("list").setExecutor(new ListCommand());
+        getCommand("message").setExecutor(new MessageCommand());
+        getCommand("reply").setExecutor(new ReplyCommand());
+        getCommand("rules").setExecutor(new RulesCommand());
         getCommand("staffmode").setExecutor(new StaffModeCommand());
         getCommand("teleport").setExecutor(new TeleportCommand());
         getCommand("vanish").setExecutor(new VanishCommand());
+
 
         Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerInteractListener(), this);
