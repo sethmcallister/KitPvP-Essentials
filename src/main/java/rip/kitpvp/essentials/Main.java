@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import rip.kitpvp.essentials.commands.*;
+import rip.kitpvp.essentials.listeners.PlayerInteractListener;
 import rip.kitpvp.essentials.listeners.PlayerJoinListener;
 import rip.kitpvp.essentials.managers.FreezeManager;
 import rip.kitpvp.essentials.managers.MessageManager;
@@ -63,6 +64,8 @@ public class Main extends JavaPlugin
         getCommand("vanish").setExecutor(new VanishCommand());
 
         Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerInteractListener(), this);
+
         Bukkit.getPluginManager().registerEvents(this.freezeManager, this);
 
         this.autobroadcastTask = new AutobroadcastTask();

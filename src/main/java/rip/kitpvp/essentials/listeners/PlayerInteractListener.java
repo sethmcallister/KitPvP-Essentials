@@ -1,5 +1,8 @@
 package rip.kitpvp.essentials.listeners;
 
+import com.skygrind.api.API;
+import com.skygrind.api.framework.user.User;
+import com.skygrind.api.framework.user.profile.Profile;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -7,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
@@ -42,6 +46,32 @@ public class PlayerInteractListener implements Listener
                 event.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&', "&eYou have been randomly telported to &a" + player.getName() + "&e."));
                 MessageUtils.sendStaffMessage(event.getPlayer(), "&eYou have been randomly telported to &a" + player.getName() + "&e.");
             }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerDamage(EntityDamageByEntityEvent event)
+    {
+        if(!(event.getDamager() instanceof Player) && !(event.getEntity() instanceof Player))
+            return;
+
+        Player damaged = (Player) event.getEntity();
+        Player damager = (Player) event.getDamager();
+
+        User userDamaged = API.getUserManager().findByUniqueId(damaged.getUniqueId());
+        Profile profileDamaged = userDamaged.getProfile("essentials");
+        if(profileDamaged.getBoolean("staffmode"))
+        {
+            event.setDamage(0.0);
+            event.setCancelled(true);
+        }
+
+        User userDamager = API.getUserManager().findByUniqueId(damager.getUniqueId());
+        Profile profileDamager = userDamager.getProfile("essentials");
+        if(profileDamager.getBoolean("staffmode"))
+        {
+            event.setDamage(0.0);
+            event.setCancelled(true);
         }
     }
 
