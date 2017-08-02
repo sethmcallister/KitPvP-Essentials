@@ -1,0 +1,25 @@
+name: KitPvP-Essentials
+main: rip.kitpvp.essentials.Main
+version: 1.0-SNAPSHOT
+commands:
+  freeze:
+    aliases: [ss, screenshare]
+  gamemode:
+    aliases: [gm, game]
+  ignore:
+  list:
+    aliases: [online, who]
+  message:
+    aliases: [msg, to, w, whisper]
+  reply:
+    aliases: [r]
+  staffmode:
+    aliases: [h, staff, hackermode]
+  teleport:
+    aliases: [tp]
+  vanish:
+    aliases: [v, hide, invis, vis, show]
+  fly:
+  clear:
+    aliases: [ci, clearinventory]
+  lag:
