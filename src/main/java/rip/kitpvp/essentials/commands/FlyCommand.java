@@ -5,6 +5,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import rip.kitpvp.essentials.utils.MessageUtils;
 
 public class FlyCommand implements CommandExecutor
 {
@@ -17,9 +18,19 @@ public class FlyCommand implements CommandExecutor
             return true;
         }
         Player player = (Player)sender;
+        if(player.isFlying())
+        {
+            player.setFlying(false);
+            player.setAllowFlight(false);
+            player.sendMessage(ChatColor.GREEN + "You are no longer flying.");
+            MessageUtils.sendStaffMessage(player, "&aYou are no longer flying.");
+            return true;
+        }
+
         player.setAllowFlight(true);
         player.setFlying(true);
         player.sendMessage(ChatColor.GREEN + "You are now flying.");
+        MessageUtils.sendStaffMessage(player, "&aYou are now flying.");
         return true;
     }
 }
