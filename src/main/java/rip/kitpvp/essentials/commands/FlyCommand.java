@@ -22,15 +22,15 @@ public class FlyCommand implements CommandExecutor
         {
             player.setFlying(false);
             player.setAllowFlight(false);
-            player.sendMessage(ChatColor.GREEN + "You are no longer flying.");
-            MessageUtils.sendStaffMessage(player, "&aYou are no longer flying.");
+            player.sendMessage(ChatColor.YELLOW + "Flight: " + ChatColor.RED + "Disabled");
+            MessageUtils.sendStaffMessage(player, ChatColor.YELLOW + "Flight: " + ChatColor.RED + "Disabled");
             return true;
         }
 
         player.setAllowFlight(true);
         player.setFlying(true);
-        player.sendMessage(ChatColor.GREEN + "You are now flying.");
-        MessageUtils.sendStaffMessage(player, "&aYou are now flying.");
+        player.sendMessage(ChatColor.YELLOW + "Flight: " + ChatColor.GREEN + "Enabled");
+        MessageUtils.sendStaffMessage(player, ChatColor.YELLOW + "Flight: " + ChatColor.GREEN + "Enabled");
         return true;
     }
 }

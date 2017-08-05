@@ -23,6 +23,7 @@ public class Main extends JavaPlugin
     private MessageManager messageManager;
     private AutobroadcastTask autobroadcastTask;
     private FileConfiguration configuration;
+    private Integer maxSlots;
 
     @Override
     public void onLoad()
@@ -31,6 +32,7 @@ public class Main extends JavaPlugin
         this.freezeManager = new FreezeManager();
         this.staffItemManager = new StaffItemManager();
         this.messageManager = new MessageManager();
+        this.maxSlots = 150;
     }
 
     @Override
@@ -61,6 +63,7 @@ public class Main extends JavaPlugin
         getCommand("message").setExecutor(new MessageCommand());
         getCommand("reply").setExecutor(new ReplyCommand());
         getCommand("rules").setExecutor(new RulesCommand());
+        getCommand("setslots").setExecutor(new SetSlotsCommand());
         getCommand("staffmode").setExecutor(new StaffModeCommand());
         getCommand("teleport").setExecutor(new TeleportCommand());
         getCommand("vanish").setExecutor(new VanishCommand());
@@ -113,5 +116,15 @@ public class Main extends JavaPlugin
     public String getMessagePrefix()
     {
         return messagePrefix;
+    }
+
+    public Integer getMaxSlots()
+    {
+        return maxSlots;
+    }
+
+    public void setMaxSlots(final Integer maxSlots)
+    {
+        this.maxSlots = maxSlots;
     }
 }

@@ -12,7 +12,7 @@ public class ListCommand implements CommandExecutor
     @Override
     public boolean onCommand(final CommandSender sender, final Command command, final String s, final String[] args)
     {
-        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.getInstance().getMessagePrefix() + "There is currently &a" + Bukkit.getOnlinePlayers().size() + "&e/&a" + Bukkit.getMaxPlayers() + "&e online."));
+        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.getInstance().getMessagePrefix() + "There is currently &a" + Bukkit.getOnlinePlayers().size() + "&e/&a" + Main.getInstance().getMaxSlots() + "&e online."));
         return true;
     }
 }

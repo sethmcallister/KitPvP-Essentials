@@ -24,3 +24,4 @@ commands:
     aliases: [ci, clearinventory]
   lag:
   rules:
+  setslots:

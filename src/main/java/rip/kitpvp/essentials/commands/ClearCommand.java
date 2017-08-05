@@ -5,6 +5,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import rip.kitpvp.essentials.utils.MessageUtils;
 
 public class ClearCommand implements CommandExecutor
 {
@@ -17,8 +18,13 @@ public class ClearCommand implements CommandExecutor
             return true;
         }
         Player player = (Player)sender;
+        player.getInventory().setHelmet(null);
+        player.getInventory().setChestplate(null);
+        player.getInventory().setLeggings(null);
+        player.getInventory().setBoots(null);
         player.getInventory().clear();
         player.sendMessage(ChatColor.GREEN + "You have cleared your inventory.");
+        MessageUtils.sendStaffMessage(player, "&aYou have cleared your inventory.");
         return true;
     }
 }
