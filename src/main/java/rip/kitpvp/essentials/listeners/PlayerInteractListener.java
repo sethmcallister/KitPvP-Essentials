@@ -48,7 +48,7 @@ public class PlayerInteractListener implements Listener
 
                 event.getPlayer().teleport(player);
                 event.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&', "&eYou have been randomly telported to &a" + player.getName() + "&e."));
-                MessageUtils.sendStaffMessage(event.getPlayer(), "&eYou have been randomly telported to &a" + player.getName() + "&e.");
+                MessageUtils.sendStaffMessage(event.getPlayer(), "&7[&7&o" + event.getPlayer().getName() + "]:&eYou have been randomly telported to &a" + player.getName() + "&e.");
             }
         }
     }
@@ -135,7 +135,7 @@ public class PlayerInteractListener implements Listener
 
                 event.getPlayer().openInventory(clone);
                 event.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&', "&eNow inspecting &a" + touched.getName() + "&e's inventory."));
-                MessageUtils.sendStaffMessage(event.getPlayer(), ChatColor.translateAlternateColorCodes('&', "&eNow inspecting &a" + touched.getName() + "&e's inventory."));
+                MessageUtils.sendStaffMessage(event.getPlayer(), ChatColor.translateAlternateColorCodes('&', "&7[&7&o" + event.getPlayer().getName() + "]: &eNow inspecting &a" + touched.getName() + "&e's inventory."));
                 return;
             }
             if (hand.equals(Main.getInstance().getStaffItemManager().getFreezePlayerTool()))

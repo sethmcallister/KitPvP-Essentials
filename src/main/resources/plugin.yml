@@ -25,3 +25,4 @@ commands:
   lag:
   rules:
   clearchat:
+  setslots:
