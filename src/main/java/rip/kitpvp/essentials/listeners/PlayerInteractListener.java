@@ -99,6 +99,10 @@ public class PlayerInteractListener implements Listener
         Player damager = (Player) event.getDamager();
 
         User userDamaged = API.getUserManager().findByUniqueId(damaged.getUniqueId());
+
+        if (userDamaged == null)
+            return;
+
         Profile profileDamaged = userDamaged.getProfile("essentials");
         if(profileDamaged.getBoolean("staffmode"))
         {
