@@ -92,19 +92,27 @@ public class PlayerInteractListener implements Listener
     @EventHandler
     public void onPlayerDamage(EntityDamageByEntityEvent event)
     {
-        if(!(event.getDamager() instanceof Player) || !(event.getEntity() instanceof Player))
+        if (!(event.getEntity() instanceof Player))
             return;
 
         Player damaged = (Player) event.getEntity();
-        Player damager = (Player) event.getDamager();
 
         User userDamaged = API.getUserManager().findByUniqueId(damaged.getUniqueId());
+
+        if (userDamaged == null)
+            return;
+
         Profile profileDamaged = userDamaged.getProfile("essentials");
         if(profileDamaged.getBoolean("staffmode"))
         {
             event.setDamage(0.0);
             event.setCancelled(true);
         }
+
+        if(!(event.getDamager() instanceof Player))
+            return;
+
+        Player damager = (Player) event.getDamager();
 
         User userDamager = API.getUserManager().findByUniqueId(damager.getUniqueId());
         Profile profileDamager = userDamager.getProfile("essentials");

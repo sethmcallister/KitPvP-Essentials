@@ -69,8 +69,8 @@ public class Main extends JavaPlugin
         getCommand("staffmode").setExecutor(new StaffModeCommand());
         getCommand("teleport").setExecutor(new TeleportCommand());
         getCommand("vanish").setExecutor(new VanishCommand());
-
-
+        getCommand("clearchat").setExecutor(new ClearChatCommand());
+        
         Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerInteractListener(), this);
 
