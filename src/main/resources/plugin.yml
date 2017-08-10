@@ -25,3 +25,6 @@ commands:
   lag:
   rules:
   setslots:
+  broadcast:
+    aliases: [bc, announce, an]
+  freezeserver:

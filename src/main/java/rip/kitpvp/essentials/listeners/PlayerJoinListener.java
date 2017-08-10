@@ -32,6 +32,7 @@ public class PlayerJoinListener implements Listener
             player.kickPlayer(ChatColor.translateAlternateColorCodes('&', message.toString()));
             return;
         }
+
         new BukkitRunnable()
         {
             @Override
@@ -51,5 +52,21 @@ public class PlayerJoinListener implements Listener
                 }
             }
         }.runTaskAsynchronously(Main.getInstance());
+
+//        for(User user : API.getUserManager().findAll())
+//        {
+//            Profile profile = user.getProfile("essentials");
+//            if(profile.getBoolean("vanished"))
+//            {
+//                Player player1 = Bukkit.getPlayer(user.getUniqueId());
+//                if(player.getUniqueId().equals(player1.getUniqueId()))
+//                    continue;
+//
+//                if(player.hasPermission("essentials.vanish"))
+//                    continue;
+//
+//                player.hidePlayer(player1);
+//            }
+//        }
     }
 }

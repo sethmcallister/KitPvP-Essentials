@@ -53,9 +53,11 @@ public class Main extends JavaPlugin
 
         this.messagePrefix = this.configuration.getString("messagePrefix");
 
+        getCommand("broadcast").setExecutor(new BroadcastCommand());
         getCommand("clear").setExecutor(new ClearCommand());
         getCommand("fly").setExecutor(new FlyCommand());
         getCommand("freeze").setExecutor(new FreezeCommand());
+        getCommand("freezeserver").setExecutor(new FreezeServerCommand());
         getCommand("gamemode").setExecutor(new GamemodeCommand());
         getCommand("ignore").setExecutor(new IgnoreCommand());
         getCommand("lag").setExecutor(new LagCommand());
@@ -78,6 +80,7 @@ public class Main extends JavaPlugin
         this.autobroadcastTask.getBroadcasts().addAll(this.configuration.getStringList("broadcasts"));
         this.autobroadcastTask.runTaskTimerAsynchronously(this, 1L, 120 * 20L);
         new TPSTask().runTaskTimer(this, 1L, 1L);
+        this.freezeManager.getServerFrozen().set(false);
     }
 
     @Override

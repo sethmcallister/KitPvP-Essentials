@@ -24,7 +24,7 @@ public class ClearCommand implements CommandExecutor
         player.getInventory().setBoots(null);
         player.getInventory().clear();
         player.sendMessage(ChatColor.GREEN + "You have cleared your inventory.");
-        MessageUtils.sendStaffMessage(player, "&aYou have cleared your inventory.");
+        MessageUtils.sendStaffMessage(player, "&7[&7&o" + player.getName() + "]: &aYou have cleared your inventory.");
         return true;
     }
 }

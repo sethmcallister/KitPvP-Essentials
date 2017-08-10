@@ -92,7 +92,7 @@ public class PlayerInteractListener implements Listener
     @EventHandler
     public void onPlayerDamage(EntityDamageByEntityEvent event)
     {
-        if(!(event.getDamager() instanceof Player) && !(event.getEntity() instanceof Player))
+        if(!(event.getDamager() instanceof Player) || !(event.getEntity() instanceof Player))
             return;
 
         Player damaged = (Player) event.getEntity();
