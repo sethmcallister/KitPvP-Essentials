@@ -30,3 +30,5 @@ commands:
   freezeserver:
   clearchat:
   setslots:
+  togglemessages:
+    aliases: [togglepm, tpm]

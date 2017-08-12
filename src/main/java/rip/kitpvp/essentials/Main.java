@@ -70,6 +70,7 @@ public class Main extends JavaPlugin
         getCommand("teleport").setExecutor(new TeleportCommand());
         getCommand("vanish").setExecutor(new VanishCommand());
         getCommand("clearchat").setExecutor(new ClearChatCommand());
+        getCommand("togglemessages").setExecutor(new ToggleMessagesCommand());
         
         Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerInteractListener(), this);
