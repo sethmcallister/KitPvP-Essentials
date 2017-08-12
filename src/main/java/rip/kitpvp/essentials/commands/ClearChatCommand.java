@@ -24,7 +24,6 @@ public class ClearChatCommand implements CommandExecutor {
         IntStream.rangeClosed(1, 100).forEach(i -> Bukkit.broadcastMessage(""));
 
         Bukkit.broadcastMessage(ChatColor.GREEN + "The chat was cleared by " + sender.getName());
-
         return true;
     }
 }

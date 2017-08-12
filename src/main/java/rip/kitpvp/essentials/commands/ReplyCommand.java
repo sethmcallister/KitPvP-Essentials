@@ -16,7 +16,7 @@ public class ReplyCommand implements CommandExecutor
         Player player = (Player) sender;
         if (args.length == 0)
         {
-            player.sendMessage(ChatColor.RED + "Usage: /reply <message>");
+            player.sendMessage(ChatColor.RED + "Usage: /reply <message...>");
             return true;
         }
 

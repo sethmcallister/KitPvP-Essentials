@@ -6,6 +6,8 @@ import com.skygrind.api.framework.user.profile.Profile;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -59,7 +61,10 @@ public class PlayerInteractListener implements Listener
         User user = API.getUserManager().findByUniqueId(event.getPlayer().getUniqueId());
         Profile profile = user.getProfile("essentials");
         if(profile.getBoolean("staffmode"))
+        {
             event.setCancelled(true);
+            event.getPlayer().sendMessage(ChatColor.RED + "You cannot do this in hacker mode.");
+        }
     }
 
     @EventHandler
@@ -68,7 +73,29 @@ public class PlayerInteractListener implements Listener
         User user = API.getUserManager().findByUniqueId(event.getPlayer().getUniqueId());
         Profile profile = user.getProfile("essentials");
         if(profile.getBoolean("staffmode"))
+        {
             event.setCancelled(true);
+            event.getPlayer().sendMessage(ChatColor.RED + "You cannot do this in hacker mode.");
+        }
+    }
+
+    @EventHandler
+    public void onChestOpen(PlayerInteractEvent event)
+    {
+        if(!(event.getClickedBlock() instanceof Chest))
+            return;
+
+        User user = API.getUserManager().findByUniqueId(event.getPlayer().getUniqueId());
+        Profile profile = user.getProfile("essentials");
+        if(profile.getBoolean("staffmode"))
+        {
+            event.setCancelled(true);
+            Block block = event.getClickedBlock();
+            Chest chest = (Chest)block;
+            event.getPlayer().openInventory(chest.getBlockInventory());
+            event.getPlayer().sendMessage(ChatColor.RED + "Opening chest silently.");
+        }
+        return;
     }
 
     @EventHandler
@@ -77,7 +104,10 @@ public class PlayerInteractListener implements Listener
         User user = API.getUserManager().findByUniqueId(event.getPlayer().getUniqueId());
         Profile profile = user.getProfile("essentials");
         if(profile.getBoolean("staffmode"))
+        {
             event.setCancelled(true);
+            event.getPlayer().sendMessage(ChatColor.RED + "You cannot do this in hacker mode.");
+        }
     }
 
     @EventHandler
@@ -86,7 +116,10 @@ public class PlayerInteractListener implements Listener
         User user = API.getUserManager().findByUniqueId(event.getPlayer().getUniqueId());
         Profile profile = user.getProfile("essentials");
         if(profile.getBoolean("staffmode"))
+        {
             event.setCancelled(true);
+            event.getPlayer().sendMessage(ChatColor.RED + "You cannot do this in hacker mode.");
+        }
     }
 
     @EventHandler

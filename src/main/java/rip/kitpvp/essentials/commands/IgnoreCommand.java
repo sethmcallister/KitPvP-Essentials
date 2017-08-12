@@ -19,6 +19,11 @@ public class IgnoreCommand implements CommandExecutor
     @Override
     public boolean onCommand(final CommandSender sender, final Command command, final String s, final String[] args)
     {
+        if(args.length != 1)
+        {
+            sender.sendMessage(ChatColor.RED + "Usage: /ignore <player>");
+            return true;
+        }
         Player player = (Player) sender;
         User user = API.getUserManager().findByUniqueId(player.getUniqueId());
         Player target = Bukkit.getPlayer(args[0]);

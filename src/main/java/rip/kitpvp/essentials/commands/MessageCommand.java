@@ -20,6 +20,11 @@ public class MessageCommand implements CommandExecutor
             sender.sendMessage(ChatColor.RED + "No player with the name or UUID '" + args[0] + "' could be found.");
             return true;
         }
+        if(args.length < 2)
+        {
+            sender.sendMessage(ChatColor.RED + "Usage: /message <player> <message...>");
+            return true;
+        }
         String message = StringUtils.join(args, " ", 1, args.length);
         Main.getInstance().getMessageManager().setConversations((Player) sender, target, message);
         return true;

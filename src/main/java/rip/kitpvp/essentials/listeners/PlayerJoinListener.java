@@ -53,20 +53,41 @@ public class PlayerJoinListener implements Listener
             }
         }.runTaskAsynchronously(Main.getInstance());
 
-//        for(User user : API.getUserManager().findAll())
-//        {
-//            Profile profile = user.getProfile("essentials");
-//            if(profile.getBoolean("vanished"))
-//            {
-//                Player player1 = Bukkit.getPlayer(user.getUniqueId());
-//                if(player.getUniqueId().equals(player1.getUniqueId()))
-//                    continue;
-//
-//                if(player.hasPermission("essentials.vanish"))
-//                    continue;
-//
-//                player.hidePlayer(player1);
-//            }
-//        }
+        new BukkitRunnable()
+        {
+            @Override
+            public void run()
+            {
+                User user = API.getUserManager().findByUniqueId(player.getUniqueId());
+                Profile profile = user.getProfile("essentials");
+                if(!profile.getBoolean("staffmode"))
+                    return;
+
+                player.getInventory().clear();
+                player.getInventory().setItem(0, Main.getInstance().getStaffItemManager().getCarpetTool());
+                player.getInventory().setItem(1, Main.getInstance().getStaffItemManager().getInventoryInspectTool());
+                player.getInventory().setItem(4, Main.getInstance().getStaffItemManager().getFreezePlayerTool());
+                player.getInventory().setItem(8, Main.getInstance().getStaffItemManager().getMatchTeleportTool());
+                player.updateInventory();
+            }
+        }.runTaskLater(Main.getInstance(), 5L);
+
+
+        for(Player player1 : Bukkit.getOnlinePlayers())
+        {
+            if(player.getUniqueId().equals(player1.getUniqueId()))
+                continue;
+
+            User user = API.getUserManager().findByUniqueId(player1.getUniqueId());
+            Profile profile = user.getProfile("essentials");
+
+            if(!profile.getBoolean("vanished"))
+                continue;
+
+            if(player.hasPermission("essentials.vanish"))
+                continue;
+
+            player1.hidePlayer(player);
+        }
     }
 }
