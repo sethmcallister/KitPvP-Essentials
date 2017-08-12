@@ -84,6 +84,8 @@ public class Main extends JavaPlugin
         getCommand("tpa").setExecutor(new TeleportRequestCommand());
         getCommand("tpahere").setExecutor(new TeleportHereRequestCommand());
         getCommand("tpaccept").setExecutor(new TeleportAcceptCommand());
+        getCommand("seen").setExecutor(new SeenCommand());
+        getCommand("craft").setExecutor(new CraftCommand());
 
         Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerInteractListener(), this);
