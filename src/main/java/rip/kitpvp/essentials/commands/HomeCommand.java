@@ -44,6 +44,8 @@ public class HomeCommand implements CommandExecutor
             return true;
         }
 
+        Integer seconds = getHomeTime(player);
+        sender.sendMessage(ChatColor.YELLOW + "You will be teleported to your home " + ChatColor.GREEN + name + ChatColor.YELLOW + " in " + seconds + " seconds.");
         Location location1 = new Location(Bukkit.getWorld(location.getWorld()), location.getX(), location.getY(), location.getZ());
         new BukkitRunnable()
         {
@@ -54,7 +56,7 @@ public class HomeCommand implements CommandExecutor
                 player.teleport(location1);
                 sender.sendMessage(ChatColor.YELLOW + "You have been teleported to " + ChatColor.GREEN + name + ChatColor.YELLOW + ".");
             }
-        }.runTaskLater(Main.getInstance(), getHomeTime(player) * 20L);
+        }.runTaskLater(Main.getInstance(), seconds * 20L);
         return true;
     }
 

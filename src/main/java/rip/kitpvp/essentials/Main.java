@@ -9,6 +9,7 @@ import rip.kitpvp.essentials.listeners.PlayerJoinListener;
 import rip.kitpvp.essentials.managers.FreezeManager;
 import rip.kitpvp.essentials.managers.MessageManager;
 import rip.kitpvp.essentials.managers.StaffItemManager;
+import rip.kitpvp.essentials.managers.TeleportationManager;
 import rip.kitpvp.essentials.tasks.AutobroadcastTask;
 import rip.kitpvp.essentials.tasks.TPSTask;
 
@@ -21,6 +22,7 @@ public class Main extends JavaPlugin
     private FreezeManager freezeManager;
     private StaffItemManager staffItemManager;
     private MessageManager messageManager;
+    private TeleportationManager teleportationManager;
     private AutobroadcastTask autobroadcastTask;
     private FileConfiguration configuration;
     private Integer maxSlots;
@@ -32,6 +34,7 @@ public class Main extends JavaPlugin
         this.freezeManager = new FreezeManager();
         this.staffItemManager = new StaffItemManager();
         this.messageManager = new MessageManager();
+        this.teleportationManager = new TeleportationManager();
         this.maxSlots = 150;
     }
 
@@ -136,5 +139,10 @@ public class Main extends JavaPlugin
     public void setMaxSlots(final Integer maxSlots)
     {
         this.maxSlots = maxSlots;
+    }
+
+    public TeleportationManager getTeleportationManager()
+    {
+        return teleportationManager;
     }
 }
