@@ -71,7 +71,13 @@ public class Main extends JavaPlugin
         getCommand("vanish").setExecutor(new VanishCommand());
         getCommand("clearchat").setExecutor(new ClearChatCommand());
         getCommand("togglemessages").setExecutor(new ToggleMessagesCommand());
-        
+        getCommand("deletehome").setExecutor(new DeleteHomeCommand());
+        getCommand("enderchest").setExecutor(new EnderchestCommand());
+        getCommand("feed").setExecutor(new FeedCommand());
+        getCommand("hat").setExecutor(new HatCommand());
+        getCommand("home").setExecutor(new HomeCommand());
+        getCommand("sethome").setExecutor(new HomeCommand());
+
         Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerInteractListener(), this);
 
@@ -92,7 +98,7 @@ public class Main extends JavaPlugin
         saveConfig();
     }
 
-    public static Main getInstance()
+    public static synchronized Main getInstance()
     {
         return instance;
     }

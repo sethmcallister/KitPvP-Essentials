@@ -32,3 +32,10 @@ commands:
   setslots:
   togglemessages:
     aliases: [togglepm, tpm]
+  deletehome:
+    aliases: [delhome]
+  enderchest:
+    aliases: [ec]
+  hat:
+  home:
+  sethome:
