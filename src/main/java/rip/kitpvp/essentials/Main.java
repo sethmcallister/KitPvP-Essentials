@@ -6,6 +6,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import rip.kitpvp.essentials.commands.*;
 import rip.kitpvp.essentials.listeners.PlayerInteractListener;
 import rip.kitpvp.essentials.listeners.PlayerJoinListener;
+import rip.kitpvp.essentials.listeners.PlayerQuitListener;
 import rip.kitpvp.essentials.managers.FreezeManager;
 import rip.kitpvp.essentials.managers.MessageManager;
 import rip.kitpvp.essentials.managers.StaffItemManager;
@@ -86,6 +87,7 @@ public class Main extends JavaPlugin
 
         Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerInteractListener(), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerQuitListener(), this);
 
         Bukkit.getPluginManager().registerEvents(this.freezeManager, this);
 

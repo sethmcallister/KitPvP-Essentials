@@ -13,6 +13,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import rip.kitpvp.essentials.Main;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class PlayerJoinListener implements Listener
 {
@@ -47,6 +48,8 @@ public class PlayerJoinListener implements Listener
                     profile.set("ignoring", new ArrayList<>());
                     profile.set("staffmode", false);
                     profile.set("pmsEnabled", true);
+                    profile.set("online", true);
+                    profile.set("lastSeen", new Date(System.currentTimeMillis()));
                     user.getAllProfiles().add(profile);
                     user.update();
                 }

@@ -19,6 +19,11 @@ public class TeleportHereRequestCommand implements CommandExecutor
     @Override
     public boolean onCommand(final CommandSender sender, final Command command, final String s, final String[] args)
     {
+        if(!sender.hasPermission("essentials.tphere"))
+        {
+            sender.sendMessage(ChatColor.RED + "You do not have permission for this command.");
+            return true;
+        }
         if(args.length != 1)
         {
             sender.sendMessage(ChatColor.RED + "Usage: /tpahere <player>");
