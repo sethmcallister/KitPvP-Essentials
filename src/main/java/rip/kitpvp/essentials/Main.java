@@ -80,6 +80,9 @@ public class Main extends JavaPlugin
         getCommand("hat").setExecutor(new HatCommand());
         getCommand("home").setExecutor(new HomeCommand());
         getCommand("sethome").setExecutor(new HomeCommand());
+        getCommand("tpa").setExecutor(new TeleportRequestCommand());
+        getCommand("tpahere").setExecutor(new TeleportHereRequestCommand());
+        getCommand("tpaccept").setExecutor(new TeleportAcceptCommand());
 
         Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerInteractListener(), this);
