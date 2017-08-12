@@ -84,7 +84,7 @@ public class PlayerJoinListener implements Listener
             if(!profile.getBoolean("vanished"))
                 continue;
 
-            if(player.hasPermission("essentials.vanish"))
+            if(player1.hasPermission("essentials.vanish"))
                 continue;
 
             player1.hidePlayer(player);
