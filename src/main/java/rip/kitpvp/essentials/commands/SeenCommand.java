@@ -39,6 +39,11 @@ public class SeenCommand implements CommandExecutor
                 return true;
             }
             User user = ((CoreUserManager) API.getUserManager()).getUserDataDriver().findById(offlinePlayer.getUniqueId());
+            if(user == null)
+            {
+                sender.sendMessage(ChatColor.RED + "No player with the name or UUID '" + args[0] + "' could be found.");
+                return true;
+            }
             Profile profile = user.getProfile("essentials");
             Date lastSeen = (Date) profile.getObject("lastSeen");
             sender.sendMessage(ChatColor.GREEN + user.getName() + ChatColor.YELLOW + " was last seen at " + ChatColor.GREEN + lastSeen.toLocaleString() + ChatColor.YELLOW + ".");
@@ -51,8 +56,8 @@ public class SeenCommand implements CommandExecutor
             sender.sendMessage(ChatColor.GREEN + user.getName() + ChatColor.YELLOW + " is online.");
             return true;
         }
-        Date lastSeen = (Date) profile.getObject("lastSeen");
-        sender.sendMessage(ChatColor.GREEN + user.getName() + ChatColor.YELLOW + " was last seen at " + ChatColor.GREEN + lastSeen.toLocaleString() + ChatColor.YELLOW + ".");
+        String lastSeen = profile.getString("lastSeen");
+        sender.sendMessage(ChatColor.GREEN + user.getName() + ChatColor.YELLOW + " was last seen at " + ChatColor.GREEN + lastSeen + ChatColor.YELLOW + ".");
         return true;
     }
 }

@@ -38,6 +38,8 @@ commands:
     aliases: [ec]
   hat:
   home:
+  feed:
+    aliases: [eat]
   sethome:
   tpahere:
   tpa:

@@ -6,6 +6,8 @@ public class TPSTask extends BukkitRunnable
 {
     private static int TICK_COUNT = 0;
     private static long[] TICKS = new long[600];
+    private static long LAST_TICK_TIME = System.currentTimeMillis();
+    public static long LAST_TICK_LENGTH = 0L;
 
     public static double getTPS()
     {
@@ -35,5 +37,10 @@ public class TPSTask extends BukkitRunnable
         TICKS[(TICK_COUNT% TICKS.length)] = System.currentTimeMillis();
 
         TICK_COUNT+= 1;
+
+        long last = LAST_TICK_TIME;
+        long now = System.currentTimeMillis();
+        LAST_TICK_TIME = now;
+        LAST_TICK_LENGTH = now - last;
     }
 }

@@ -8,17 +8,18 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
+import org.bukkit.block.DoubleChest;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.player.PlayerBucketEmptyEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import rip.kitpvp.essentials.Main;
@@ -80,9 +81,9 @@ public class PlayerInteractListener implements Listener
     }
 
     @EventHandler
-    public void onChestOpen(PlayerInteractEvent event)
+    public void onBlockInteract(PlayerInteractEvent event)
     {
-        if(!(event.getClickedBlock() instanceof Chest))
+        if(!(event.getClickedBlock() instanceof Chest) || !(event.getClickedBlock() instanceof DoubleChest))
             return;
 
         User user = API.getUserManager().findByUniqueId(event.getPlayer().getUniqueId());
@@ -90,12 +91,50 @@ public class PlayerInteractListener implements Listener
         if(profile.getBoolean("staffmode"))
         {
             event.setCancelled(true);
-            Block block = event.getClickedBlock();
-            Chest chest = (Chest)block;
-            event.getPlayer().openInventory(chest.getBlockInventory());
+
+            Inventory inventory;
+            if(event.getClickedBlock() instanceof Chest)
+                inventory = ((Chest) event.getClickedBlock()).getInventory();
+            else
+                inventory = ((DoubleChest) event.getClickedBlock()).getInventory();
+
+            Inventory inventory1 = Bukkit.createInventory(null, inventory.getSize(), "Silently Opened");
+            inventory.forEach(inventory1::addItem);
+
+            event.getPlayer().openInventory(inventory1);
             event.getPlayer().sendMessage(ChatColor.RED + "Opening chest silently.");
         }
-        return;
+    }
+
+    @EventHandler
+    public void onInventoryOpen(InventoryOpenEvent event)
+    {
+        if(!(event.getInventory().getHolder() instanceof Chest) || !(event.getInventory().getHolder() instanceof DoubleChest))
+            return;
+
+        User user = API.getUserManager().findByUniqueId(event.getPlayer().getUniqueId());
+        Profile profile = user.getProfile("essentials");
+        if(profile.getBoolean("staffmode"))
+        {
+            event.setCancelled(true);
+            Inventory inventory = event.getInventory();
+            Inventory inventory1 = Bukkit.createInventory(null, inventory.getSize(), "Silently Opened");
+            inventory.forEach(inventory1::addItem);
+
+            event.getPlayer().openInventory(inventory1);
+            event.getPlayer().sendMessage(ChatColor.RED + "Opening chest silently.");
+        }
+    }
+
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent event)
+    {
+        Player player = (Player) event.getWhoClicked();
+
+        User user = API.getUserManager().findByUniqueId(player.getUniqueId());
+        Profile profile = user.getProfile("essentials");
+        if(profile.getBoolean("staffmode"))
+            event.setResult(Event.Result.DENY);
     }
 
     @EventHandler
@@ -112,6 +151,18 @@ public class PlayerInteractListener implements Listener
 
     @EventHandler
     public void onItemPickup(PlayerPickupItemEvent event)
+    {
+        User user = API.getUserManager().findByUniqueId(event.getPlayer().getUniqueId());
+        Profile profile = user.getProfile("essentials");
+        if(profile.getBoolean("staffmode"))
+        {
+            event.setCancelled(true);
+            event.getPlayer().sendMessage(ChatColor.RED + "You cannot do this in hacker mode.");
+        }
+    }
+
+    @EventHandler
+    public void onItemDrop(PlayerDropItemEvent event)
     {
         User user = API.getUserManager().findByUniqueId(event.getPlayer().getUniqueId());
         Profile profile = user.getProfile("essentials");

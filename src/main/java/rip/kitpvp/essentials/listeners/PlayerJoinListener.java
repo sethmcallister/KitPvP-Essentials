@@ -53,6 +53,7 @@ public class PlayerJoinListener implements Listener
                     user.getAllProfiles().add(profile);
                     user.update();
                 }
+                profile.set("online", true);
             }
         }.runTaskAsynchronously(Main.getInstance());
 

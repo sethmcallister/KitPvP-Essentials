@@ -21,7 +21,7 @@ public class TeleportRequestCommand implements CommandExecutor
     {
         if(args.length != 1)
         {
-            sender.sendMessage(ChatColor.RED + "Usage: /tpahere <player>");
+            sender.sendMessage(ChatColor.RED + "Usage: /tpa <player>");
             return true;
         }
         Player player = (Player)sender;
@@ -37,7 +37,7 @@ public class TeleportRequestCommand implements CommandExecutor
 
         target.spigot().sendMessage(new ComponentBuilder(player.getName()).color(net.md_5.bungee.api.ChatColor.GREEN)
                 .append(" has sent you a teleportation request.").color(net.md_5.bungee.api.ChatColor.YELLOW)
-                .append(" [Accept]").event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/accept " + player.getName())).create());
+                .append(" [Accept]").event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tpaccept " + player.getName())).create());
         player.sendMessage(ChatColor.YELLOW + "You have sent a teleportation request to " + ChatColor.GREEN + target.getName() + ChatColor.YELLOW + ".");
         return true;
     }

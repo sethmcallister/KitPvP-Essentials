@@ -25,7 +25,8 @@ public class HatCommand implements CommandExecutor
             return true;
         }
         player.getInventory().setHelmet(hand);
-        player.sendMessage(ChatColor.YELLOW + "You have put " + ChatColor.GREEN + hand.getItemMeta().getDisplayName() + ChatColor.YELLOW + " on your head.");
+        player.getInventory().remove(hand);
+        player.sendMessage(ChatColor.YELLOW + "You have put " + ChatColor.GREEN + hand.getType() + ChatColor.YELLOW + " on your head.");
         return true;
     }
 }

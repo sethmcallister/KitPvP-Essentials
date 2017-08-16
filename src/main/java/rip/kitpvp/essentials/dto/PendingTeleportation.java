@@ -8,6 +8,7 @@ public class PendingTeleportation
     private final UUID target;
     private final GooseLocation location;
     private final Long expireTime;
+    private Boolean accepted;
 
     public PendingTeleportation(final UUID sender, final UUID target, final GooseLocation location, final Long expireTime)
     {
@@ -15,6 +16,7 @@ public class PendingTeleportation
         this.target = target;
         this.location = location;
         this.expireTime = expireTime;
+        this.accepted = false;
     }
 
     public UUID getSender()
@@ -35,5 +37,15 @@ public class PendingTeleportation
     public Long getExpireTime()
     {
         return expireTime;
+    }
+
+    public Boolean getAccepted()
+    {
+        return accepted;
+    }
+
+    public void setAccepted()
+    {
+        this.accepted = true;
     }
 }

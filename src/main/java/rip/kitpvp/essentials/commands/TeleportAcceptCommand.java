@@ -39,16 +39,26 @@ public class TeleportAcceptCommand implements CommandExecutor
             sender.sendMessage(ChatColor.RED + target.getName() + " has not sent a teleportation request, or it has expired.");
             return true;
         }
+
+        Player teleportSender = Bukkit.getPlayer(teleportation.getSender());
+        if(teleportSender == null)
+            return true;
+
+        teleportations.remove(teleportation);
+
         GooseLocation gooseLocation = teleportation.getLocation();
+
         Location location = new Location(Bukkit.getWorld(gooseLocation.getWorld()), gooseLocation.getX(), gooseLocation.getY(), gooseLocation.getZ());
-        sender.sendMessage(ChatColor.YELLOW + "You will be teleported to " + ChatColor.GREEN + target.getName() + ChatColor.YELLOW + " in 5 seconds.");
+
+        teleportSender.sendMessage(ChatColor.YELLOW + "You will be teleported to " + ChatColor.GREEN + target.getName() + ChatColor.YELLOW + " in 5 seconds.");
+
         new BukkitRunnable()
         {
             @Override
             public void run()
             {
-                player.teleport(location);
-                player.sendMessage(ChatColor.YELLOW + "You have been teleported to " + ChatColor.GREEN + target.getName() + ChatColor.YELLOW + ".");
+                teleportSender.teleport(location);
+                teleportSender.sendMessage(ChatColor.YELLOW + "You have been teleported to " + ChatColor.GREEN + target.getName() + ChatColor.YELLOW + ".");
             }
         }.runTaskLater(Main.getInstance(), 5 * 20L);
         return true;
@@ -56,6 +66,13 @@ public class TeleportAcceptCommand implements CommandExecutor
 
     private PendingTeleportation getTeleportation(UUID sender, List<PendingTeleportation> teleportations)
     {
-        return teleportations.stream().filter(teleportation -> teleportation.getSender().equals(sender)).filter(teleportation -> teleportation.getExpireTime() <= System.currentTimeMillis()).findFirst().orElse(null);
+        for(PendingTeleportation teleportation : teleportations)
+        {
+            if (teleportation.getSender().equals(sender) && (teleportation.getExpireTime() - System.currentTimeMillis()) > 0L && !teleportation.getAccepted())
+            {
+                return teleportation;
+            }
+        }
+        return null;
     }
 }

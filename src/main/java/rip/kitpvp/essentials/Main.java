@@ -1,5 +1,7 @@
 package rip.kitpvp.essentials;
 
+import com.skygrind.api.API;
+import com.skygrind.core.framework.user.CoreUserManager;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -7,6 +9,7 @@ import rip.kitpvp.essentials.commands.*;
 import rip.kitpvp.essentials.listeners.PlayerInteractListener;
 import rip.kitpvp.essentials.listeners.PlayerJoinListener;
 import rip.kitpvp.essentials.listeners.PlayerQuitListener;
+import rip.kitpvp.essentials.listeners.SignChangeListener;
 import rip.kitpvp.essentials.managers.FreezeManager;
 import rip.kitpvp.essentials.managers.MessageManager;
 import rip.kitpvp.essentials.managers.StaffItemManager;
@@ -80,7 +83,7 @@ public class Main extends JavaPlugin
         getCommand("feed").setExecutor(new FeedCommand());
         getCommand("hat").setExecutor(new HatCommand());
         getCommand("home").setExecutor(new HomeCommand());
-        getCommand("sethome").setExecutor(new HomeCommand());
+        getCommand("sethome").setExecutor(new SetHomeCommand());
         getCommand("tpa").setExecutor(new TeleportRequestCommand());
         getCommand("tpahere").setExecutor(new TeleportHereRequestCommand());
         getCommand("tpaccept").setExecutor(new TeleportAcceptCommand());
@@ -91,6 +94,7 @@ public class Main extends JavaPlugin
         Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerInteractListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerQuitListener(), this);
+        Bukkit.getPluginManager().registerEvents(new SignChangeListener(), this);
 
         Bukkit.getPluginManager().registerEvents(this.freezeManager, this);
 
