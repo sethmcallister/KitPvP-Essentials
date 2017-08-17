@@ -8,14 +8,16 @@ public class PendingTeleportation
     private final UUID target;
     private final GooseLocation location;
     private final Long expireTime;
+    private final TeleportType telportType;
     private Boolean accepted;
 
-    public PendingTeleportation(final UUID sender, final UUID target, final GooseLocation location, final Long expireTime)
+    public PendingTeleportation(final UUID sender, final UUID target, final GooseLocation location, final Long expireTime, final TeleportType telportType)
     {
         this.sender = sender;
         this.target = target;
         this.location = location;
         this.expireTime = expireTime;
+        this.telportType = telportType;
         this.accepted = false;
     }
 
@@ -47,5 +49,16 @@ public class PendingTeleportation
     public void setAccepted()
     {
         this.accepted = true;
+    }
+
+    public TeleportType getTelportType()
+    {
+        return telportType;
+    }
+
+    public enum TeleportType
+    {
+        TPA,
+        TPAHERE
     }
 }

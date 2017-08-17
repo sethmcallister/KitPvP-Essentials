@@ -30,9 +30,10 @@ public class InventorySeeCommand implements CommandExecutor
             sender.sendMessage(ChatColor.RED + "No player with the name or UUID '" + args[0] + "' could be found.");
             return true;
         }
-        Inventory inventory = Bukkit.createInventory(null, 52, "Inventory");
+        Inventory inventory = Bukkit.createInventory(null, 54, "Inventory");
         for(ItemStack itemStack : target.getInventory())
-            inventory.addItem(itemStack);
+            if (itemStack != null)
+                inventory.addItem(itemStack);
         return true;
     }
 }

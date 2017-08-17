@@ -1,7 +1,5 @@
 package rip.kitpvp.essentials.commands;
 
-import com.skygrind.api.API;
-import com.skygrind.api.framework.user.profile.Profile;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -9,9 +7,10 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachmentInfo;
+import rip.kitpvp.essentials.Main;
 import rip.kitpvp.essentials.dto.GooseLocation;
+import rip.kitpvp.essentials.dto.Home;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SetHomeCommand implements CommandExecutor
@@ -25,14 +24,11 @@ public class SetHomeCommand implements CommandExecutor
             return true;
         }
         Player player = (Player)sender;
-        Profile profile = API.getUserManager().findByUniqueId(player.getUniqueId()).getProfile("essentials");
-        List<GooseLocation> locations = (List<GooseLocation>) profile.getObject("homes");
-        if(locations == null)
-            locations = new ArrayList<>();
-
         String name = args[0];
 
-        if(this.homeAlreadyExists(name, locations))
+        List<Home> homes = Main.getInstance().getHomeManager().getHomesByPlayer(player.getUniqueId());
+
+        if(this.homeAlreadyExists(name, homes))
         {
             sender.sendMessage(ChatColor.RED + "You already have a home with this name.");
             return true;
@@ -40,20 +36,23 @@ public class SetHomeCommand implements CommandExecutor
 
         Location location = player.getLocation();
 
-        if(locations.size() >= this.getMaxHomes(player))
+        if(homes.size() >= this.getMaxHomes(player))
         {
             sender.sendMessage(ChatColor.RED + "You have reached the maximum amount of home you can have.");
             return true;
         }
         GooseLocation gooseLocation = new GooseLocation(name, location.getWorld().getUID(), location.getX(), location.getY(), location.getZ());
-        locations.add(gooseLocation);
+
+        Home home = new Home(player.getUniqueId(), gooseLocation, name);
+        homes.add(home);
+        Main.getInstance().getHomeManager().getHomeMap().put(player.getUniqueId(), homes);
         sender.sendMessage(ChatColor.YELLOW + "You have set a new home at " + ChatColor.GREEN + gooseLocation.getX() + ", " + gooseLocation.getY() + ", " + gooseLocation.getZ() + ChatColor.YELLOW + ".");
         return true;
     }
 
-    private boolean homeAlreadyExists(final String name, final List<GooseLocation> locations)
+    private boolean homeAlreadyExists(final String name, final List<Home> homes)
     {
-        return locations.stream().anyMatch(location -> location.getName().equalsIgnoreCase(name));
+        return homes.stream().anyMatch(location -> location.getName().equalsIgnoreCase(name));
     }
 
     private Integer getMaxHomes(final Player player)

@@ -1,5 +1,6 @@
 name: KitPvP-Essentials
 main: rip.kitpvp.essentials.Main
+depends: [SkyProfiles]
 version: 1.0-SNAPSHOT
 commands:
   freeze:

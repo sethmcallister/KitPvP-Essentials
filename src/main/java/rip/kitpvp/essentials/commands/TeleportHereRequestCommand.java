@@ -37,7 +37,7 @@ public class TeleportHereRequestCommand implements CommandExecutor
             return true;
         }
         GooseLocation location = new GooseLocation("", player.getLocation().getWorld().getUID(), player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ());
-        PendingTeleportation pendingTeleportation = new PendingTeleportation(player.getUniqueId(), target.getUniqueId(), location, System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(10L));
+        PendingTeleportation pendingTeleportation = new PendingTeleportation(player.getUniqueId(), target.getUniqueId(), location, System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(10L), PendingTeleportation.TeleportType.TPAHERE);
         Main.getInstance().getTeleportationManager().getPendingTeleportationList().add(pendingTeleportation);
 
         target.spigot().sendMessage(new ComponentBuilder(player.getName()).color(net.md_5.bungee.api.ChatColor.GREEN)

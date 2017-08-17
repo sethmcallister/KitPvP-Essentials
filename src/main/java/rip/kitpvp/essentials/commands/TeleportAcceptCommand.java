@@ -12,11 +12,14 @@ import rip.kitpvp.essentials.Main;
 import rip.kitpvp.essentials.dto.GooseLocation;
 import rip.kitpvp.essentials.dto.PendingTeleportation;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 public class TeleportAcceptCommand implements CommandExecutor
 {
+    public static final List<UUID> TELEPORT_PENDING = new ArrayList<>();
+
     @Override
     public boolean onCommand(final CommandSender sender, final Command command, final String s, final String[] args)
     {
@@ -40,27 +43,57 @@ public class TeleportAcceptCommand implements CommandExecutor
             return true;
         }
 
-        Player teleportSender = Bukkit.getPlayer(teleportation.getSender());
-        if(teleportSender == null)
-            return true;
-
+        teleportation.setAccepted();
         teleportations.remove(teleportation);
 
         GooseLocation gooseLocation = teleportation.getLocation();
 
         Location location = new Location(Bukkit.getWorld(gooseLocation.getWorld()), gooseLocation.getX(), gooseLocation.getY(), gooseLocation.getZ());
 
-        teleportSender.sendMessage(ChatColor.YELLOW + "You will be teleported to " + ChatColor.GREEN + target.getName() + ChatColor.YELLOW + " in 5 seconds.");
-
-        new BukkitRunnable()
+        switch (teleportation.getTelportType())
         {
-            @Override
-            public void run()
+            case TPA:
             {
-                teleportSender.teleport(location);
-                teleportSender.sendMessage(ChatColor.YELLOW + "You have been teleported to " + ChatColor.GREEN + target.getName() + ChatColor.YELLOW + ".");
+                sender.sendMessage(ChatColor.YELLOW + "You have accepted " + ChatColor.GREEN + target.getName() + ChatColor.YELLOW + " teleport request.");
+                target.sendMessage(ChatColor.YELLOW + "You will be teleported to " + ChatColor.GREEN + sender.getName() + ChatColor.YELLOW + " in 5 seconds.");
+                TELEPORT_PENDING.add(target.getUniqueId());
+                new BukkitRunnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        if(!TELEPORT_PENDING.contains(target.getUniqueId()))
+                            return;
+
+                        target.teleport(location);
+                        target.sendMessage(ChatColor.YELLOW + "You have been teleported to " + ChatColor.GREEN + sender.getName() + ChatColor.YELLOW + ".");
+                        TELEPORT_PENDING.remove(target.getUniqueId());
+                    }
+                }.runTaskLater(Main.getInstance(), 5 * 20L);
+                break;
             }
-        }.runTaskLater(Main.getInstance(), 5 * 20L);
+            case TPAHERE:
+            {
+                target.sendMessage(ChatColor.YELLOW + "Your teleport here request to " + ChatColor.GREEN + sender.getName() + ChatColor.YELLOW + " has been accepted.");
+                sender.sendMessage(ChatColor.YELLOW + "You will be teleported to " + ChatColor.GREEN + target.getName() + ChatColor.YELLOW + " in 5 seconds.");
+                TELEPORT_PENDING.add(player.getUniqueId());
+
+                new BukkitRunnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        if(!TELEPORT_PENDING.contains(player.getUniqueId()))
+                            return;
+
+                        player.teleport(location);
+                        player.sendMessage(ChatColor.YELLOW + "You have been teleported to " + ChatColor.GREEN + target.getName() + ChatColor.YELLOW + ".");
+                        TELEPORT_PENDING.remove(player.getUniqueId());
+                    }
+                }.runTaskLater(Main.getInstance(), 5 * 20L);
+                break;
+            }
+        }
         return true;
     }
 

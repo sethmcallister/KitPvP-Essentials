@@ -1,15 +1,13 @@
 package rip.kitpvp.essentials.commands;
 
-import com.skygrind.api.API;
-import com.skygrind.api.framework.user.profile.Profile;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import rip.kitpvp.essentials.dto.GooseLocation;
+import rip.kitpvp.essentials.Main;
+import rip.kitpvp.essentials.dto.Home;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DeleteHomeCommand implements CommandExecutor
@@ -24,27 +22,25 @@ public class DeleteHomeCommand implements CommandExecutor
         }
         Player player = (Player)sender;
         String name = args[0];
-        Profile profile = API.getUserManager().findByUniqueId(player.getUniqueId()).getProfile("essentials");
-        List<GooseLocation> locations = (List<GooseLocation>) profile.getObject("homes");
-        if(locations == null)
+
+        List<Home> homes = Main.getInstance().getHomeManager().getHomesByPlayer(player.getUniqueId());
+
+        Home home = byNameName(name, homes);
+
+        if(home == null)
         {
-            locations = new ArrayList<>();
-            profile.set("homes", locations);
-        }
-        GooseLocation location = this.findByName(name, locations);
-        if(location == null)
-        {
-            sender.sendMessage(ChatColor.RED + "You do not have a home set with the name '"+ name + "'.");
+            sender.sendMessage(ChatColor.RED + "You do not have a home with that name.");
             return true;
         }
-        locations.remove(location);
-        profile.set("homes", locations);
-        sender.sendMessage(ChatColor.YELLOW + "You have deleted the home with the name " + ChatColor.GREEN + location.getName() + ChatColor.YELLOW + ".");
+
+        homes.remove(home);
+        Main.getInstance().getHomeManager().getHomeMap().put(player.getUniqueId(), homes);
+        sender.sendMessage(ChatColor.YELLOW + "You have deleted your home " + ChatColor.GREEN + name + ChatColor.YELLOW + ".");
         return true;
     }
 
-    private GooseLocation findByName(final String name, final List<GooseLocation> locations)
+    private Home byNameName(final String name, final List<Home> homes)
     {
-        return locations.stream().filter(gooseLocation -> gooseLocation.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
+        return homes.stream().filter(h -> h.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
     }
 }

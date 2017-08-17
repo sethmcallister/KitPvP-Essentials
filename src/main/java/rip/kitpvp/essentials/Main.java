@@ -1,32 +1,38 @@
 package rip.kitpvp.essentials;
 
-import com.skygrind.api.API;
-import com.skygrind.core.framework.user.CoreUserManager;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import rip.kitpvp.essentials.commands.*;
-import rip.kitpvp.essentials.listeners.PlayerInteractListener;
-import rip.kitpvp.essentials.listeners.PlayerJoinListener;
-import rip.kitpvp.essentials.listeners.PlayerQuitListener;
-import rip.kitpvp.essentials.listeners.SignChangeListener;
-import rip.kitpvp.essentials.managers.FreezeManager;
-import rip.kitpvp.essentials.managers.MessageManager;
-import rip.kitpvp.essentials.managers.StaffItemManager;
-import rip.kitpvp.essentials.managers.TeleportationManager;
+import rip.kitpvp.essentials.dto.Home;
+import rip.kitpvp.essentials.listeners.*;
+import rip.kitpvp.essentials.managers.*;
 import rip.kitpvp.essentials.tasks.AutobroadcastTask;
 import rip.kitpvp.essentials.tasks.TPSTask;
 
+import java.io.*;
+import java.lang.reflect.Type;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class Main extends JavaPlugin
 {
     private static Main instance;
     private String messagePrefix;
+    private Gson gson;
     private FreezeManager freezeManager;
     private StaffItemManager staffItemManager;
     private MessageManager messageManager;
     private TeleportationManager teleportationManager;
+    private HomeManager homeManager;
+    private String homeFileName;
     private AutobroadcastTask autobroadcastTask;
     private FileConfiguration configuration;
     private Integer maxSlots;
@@ -35,11 +41,15 @@ public class Main extends JavaPlugin
     public void onLoad()
     {
         setInstance(this);
+        this.gson = new GsonBuilder().setPrettyPrinting().create();
         this.freezeManager = new FreezeManager();
         this.staffItemManager = new StaffItemManager();
         this.messageManager = new MessageManager();
         this.teleportationManager = new TeleportationManager();
+        this.homeManager = new HomeManager();
+        this.homeFileName = getDataFolder() + File.separator + "homes.json";
         this.maxSlots = 150;
+        loadHomes();
     }
 
     @Override
@@ -59,7 +69,6 @@ public class Main extends JavaPlugin
         saveConfig();
 
         this.messagePrefix = this.configuration.getString("messagePrefix");
-
         getCommand("broadcast").setExecutor(new BroadcastCommand());
         getCommand("clear").setExecutor(new ClearCommand());
         getCommand("fly").setExecutor(new FlyCommand());
@@ -91,8 +100,9 @@ public class Main extends JavaPlugin
         getCommand("craft").setExecutor(new CraftCommand());
         getCommand("invsee").setExecutor(new InventorySeeCommand());
 
-        Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerInteractListener(), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerMoveListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerQuitListener(), this);
         Bukkit.getPluginManager().registerEvents(new SignChangeListener(), this);
 
@@ -111,6 +121,60 @@ public class Main extends JavaPlugin
         this.configuration.set("messagePrefix", this.messagePrefix);
         this.configuration.set("broadcasts", this.autobroadcastTask.getBroadcasts());
         saveConfig();
+
+        String json = this.gson.toJson(getHomeManager().getHomeMap());
+        File file = new File(this.homeFileName);
+        if(!file.exists())
+            try
+            {
+                file.createNewFile();
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+
+        try(FileWriter writer = new FileWriter(file))
+        {
+            writer.write(json);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadHomes()
+    {
+        File file = new File(this.homeFileName);
+        if(!file.exists())
+        {
+            getDataFolder().mkdir();
+            try
+            {
+                file.createNewFile();
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        else
+        {
+            JsonParser parser = new JsonParser();
+
+            try(FileReader fileReader = new FileReader(this.homeFileName))
+            {
+                JsonElement element = parser.parse(fileReader);
+                Type type = new TypeToken<Map<UUID, List<Home>>>(){}.getType();
+                getHomeManager().setHomeMap(this.gson.fromJson(element, type));
+                System.out.println(element);
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
     }
 
     public static synchronized Main getInstance()
@@ -156,5 +220,10 @@ public class Main extends JavaPlugin
     public TeleportationManager getTeleportationManager()
     {
         return teleportationManager;
+    }
+
+    public HomeManager getHomeManager()
+    {
+        return homeManager;
     }
 }

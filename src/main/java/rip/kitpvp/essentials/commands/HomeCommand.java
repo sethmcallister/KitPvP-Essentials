@@ -1,7 +1,5 @@
 package rip.kitpvp.essentials.commands;
 
-import com.skygrind.api.API;
-import com.skygrind.api.framework.user.profile.Profile;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -13,8 +11,8 @@ import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.bukkit.scheduler.BukkitRunnable;
 import rip.kitpvp.essentials.Main;
 import rip.kitpvp.essentials.dto.GooseLocation;
+import rip.kitpvp.essentials.dto.Home;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class HomeCommand implements CommandExecutor
@@ -29,24 +27,22 @@ public class HomeCommand implements CommandExecutor
         }
         Player player = (Player)sender;
         String name = args[0];
-        Profile profile = API.getUserManager().findByUniqueId(player.getUniqueId()).getProfile("essentials");
-        List<GooseLocation> locations = (List<GooseLocation>) profile.getObject("homes");
-        if(locations == null)
-        {
-            locations = new ArrayList<>();
-            profile.set("homes", locations);
-        }
 
-        GooseLocation location = this.findByName(name, locations);
-        if(location == null)
+        List<Home> homes = Main.getInstance().getHomeManager().getHomesByPlayer(player.getUniqueId());
+
+        Home home = byNameName(name, homes);
+
+        if(home == null)
         {
             sender.sendMessage(ChatColor.RED + "You do not have a home with that name.");
             return true;
         }
 
+        GooseLocation location = home.getGooseLocation();
+
         Integer seconds = getHomeTime(player);
-        sender.sendMessage(ChatColor.YELLOW + "You will be teleported to your home " + ChatColor.GREEN + name + ChatColor.YELLOW + " in " + seconds + " seconds.");
         Location location1 = new Location(Bukkit.getWorld(location.getWorld()), location.getX(), location.getY(), location.getZ());
+        sender.sendMessage(ChatColor.YELLOW + "You will be teleported to your home " + ChatColor.GREEN + name + ChatColor.YELLOW + " in " + seconds + " seconds.");
         new BukkitRunnable()
         {
             @Override
@@ -74,8 +70,8 @@ public class HomeCommand implements CommandExecutor
         return priority;
     }
 
-    private GooseLocation findByName(final String name, final List<GooseLocation> locations)
+    private Home byNameName(final String name, final List<Home> homes)
     {
-        return locations.stream().filter(gooseLocation -> gooseLocation.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
+        return homes.stream().filter(h -> h.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
     }
 }

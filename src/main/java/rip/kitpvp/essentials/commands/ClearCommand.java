@@ -12,6 +12,13 @@ public class ClearCommand implements CommandExecutor
     @Override
     public boolean onCommand(final CommandSender sender, final Command command, final String s, final String[] args)
     {
+        if(sender.hasPermission("essentials.clear.semi"))
+        {
+            Player player = (Player)sender;
+            player.getInventory().clear();
+            player.sendMessage(ChatColor.GREEN + "You have cleared your inventory.");
+            return true;
+        }
         if(!sender.hasPermission("essentials.clear"))
         {
             sender.sendMessage(ChatColor.RED + "You do not have permission for this command!");
