@@ -34,6 +34,7 @@ public class InventorySeeCommand implements CommandExecutor
         for(ItemStack itemStack : target.getInventory())
             if (itemStack != null)
                 inventory.addItem(itemStack);
+        target.openInventory(inventory);
         return true;
     }
 }
