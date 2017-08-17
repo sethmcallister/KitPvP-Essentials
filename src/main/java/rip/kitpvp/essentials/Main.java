@@ -99,6 +99,7 @@ public class Main extends JavaPlugin
         getCommand("seen").setExecutor(new SeenCommand());
         getCommand("craft").setExecutor(new CraftCommand());
         getCommand("invsee").setExecutor(new InventorySeeCommand());
+        getCommand("lobby").setExecutor(new LobbyCommand());
 
         Bukkit.getPluginManager().registerEvents(new PlayerInteractListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(), this);
