@@ -14,6 +14,9 @@ public class InventorySeeCommand implements CommandExecutor
     @Override
     public boolean onCommand(final CommandSender sender, final Command command, final String s, final String[] args)
     {
+        if (!(sender instanceof Player))
+            return false;
+
         if(!sender.hasPermission("essentials.invsee"))
         {
             sender.sendMessage(ChatColor.RED + "You do not have permission for this command.");
@@ -34,7 +37,7 @@ public class InventorySeeCommand implements CommandExecutor
         for(ItemStack itemStack : target.getInventory())
             if (itemStack != null)
                 inventory.addItem(itemStack);
-        target.openInventory(inventory);
+        ((Player) sender).openInventory(inventory);
         return true;
     }
 }
