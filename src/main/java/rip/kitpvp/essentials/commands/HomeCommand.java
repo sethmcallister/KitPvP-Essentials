@@ -13,10 +13,14 @@ import rip.kitpvp.essentials.Main;
 import rip.kitpvp.essentials.dto.GooseLocation;
 import rip.kitpvp.essentials.dto.Home;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class HomeCommand implements CommandExecutor
 {
+    public static final List<UUID> TELEPORTING = new ArrayList<>();
+
     @Override
     public boolean onCommand(final CommandSender sender, final Command command, final String s, final String[] args)
     {
@@ -43,12 +47,17 @@ public class HomeCommand implements CommandExecutor
         Integer seconds = getHomeTime(player);
         Location location1 = new Location(Bukkit.getWorld(location.getWorld()), location.getX(), location.getY(), location.getZ());
         sender.sendMessage(ChatColor.YELLOW + "You will be teleported to your home " + ChatColor.GREEN + name + ChatColor.YELLOW + " in " + seconds + " seconds.");
+        TELEPORTING.add(player.getUniqueId());
         new BukkitRunnable()
         {
             @Override
             public void run()
             {
-                //TODO HOOK INTO UHC CORE
+                if(!TELEPORTING.contains(player.getUniqueId()))
+                    return;
+
+
+                TELEPORTING.remove(player.getUniqueId());
                 player.teleport(location1);
                 sender.sendMessage(ChatColor.YELLOW + "You have been teleported to " + ChatColor.GREEN + name + ChatColor.YELLOW + ".");
             }
