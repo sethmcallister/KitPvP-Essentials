@@ -109,6 +109,8 @@ public class Main extends JavaPlugin
 
         Bukkit.getPluginManager().registerEvents(this.freezeManager, this);
 
+        getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+
         this.autobroadcastTask = new AutobroadcastTask();
         this.autobroadcastTask.getBroadcasts().addAll(this.configuration.getStringList("broadcasts"));
         this.autobroadcastTask.runTaskTimerAsynchronously(this, 1L, 120 * 20L);
