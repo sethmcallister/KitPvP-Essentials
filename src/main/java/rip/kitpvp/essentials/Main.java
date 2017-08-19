@@ -6,7 +6,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import rip.kitpvp.essentials.commands.*;
 import rip.kitpvp.essentials.dto.Home;
@@ -121,6 +123,28 @@ public class Main extends JavaPlugin
     @Override
     public void onDisable()
     {
+        for(Player player : Bukkit.getOnlinePlayers())
+        {
+            player.sendMessage(" ");
+            player.sendMessage(ChatColor.YELLOW + "The server is currently restarting! Please join back soon.");
+            player.sendMessage(" ");
+            ByteArrayOutputStream b = new ByteArrayOutputStream();
+            DataOutputStream out = new DataOutputStream(b);
+
+            try
+            {
+                out.writeUTF("Connect");
+                out.writeUTF("Hub1");
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+
+            player.sendPluginMessage(Main.getInstance(), "BungeeCord", b.toByteArray());
+        }
+
+
         this.configuration.set("messagePrefix", this.messagePrefix);
         this.configuration.set("broadcasts", this.autobroadcastTask.getBroadcasts());
         saveConfig();
